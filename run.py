@@ -23,4 +23,22 @@ class HotelManagement:
 
         # Load existing reservations from the Google Sheet
         self.get_reservations_from_sheet()
+
+    def get_reservations_from_sheet(self):
+        # Access the worksheet named "rooms"
+        worksheet = SHEET.worksheet("rooms")
         
+
+        # Fetch all records from the worksheet
+        records = worksheet.get_all_records()
+        
+        # Map reservations into a structured dictionary
+        self.reservations = {
+            record["Room"].replace(" ", ""): {
+                "name": record["Name"].strip(),
+                "check_in": record["Check-in "].strip(),
+                "check_out": record["Check-out"].strip()
+            }
+            for record in records if record["Name"]
+        }
+    
