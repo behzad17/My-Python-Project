@@ -41,7 +41,7 @@ class HotelManagement:
                 "check_in": record["Check-in"].strip(),
                 "check_out": record["Check-out"].strip()
             }
-            for record in records if record["Name"]
+            for record in records if record["Name" and record["Check-in"] and record["Check-out"]
         }
     
     def display_rooms(self):
@@ -85,6 +85,15 @@ class HotelManagement:
         if room in self.reservations:
             # Remove the reservation
             del self.reservations[room]
+            worksheet =SHEET.worksheet("rooms")
+            records = worksheet.get_all_records()
+
+            update_records = [record for record in records if record["Room"].strip() !=room.strip()]
+
+            worksheet.clear()
+            worksheet.append_row(["Name", "Check-in", "Check-out", "Room"])
+            for record in update_records:
+                worksheet.append_row([record["Name"], record["Check-in"], record["Check-out"], record["Room"]])
             print(f"Guest checked out from {room}")
         else:
             print(f"Room {room} is not currently reserved")
