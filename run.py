@@ -38,7 +38,7 @@ class HotelManagement:
         self.reservations = {
             record["Room"].replace(" ", ""): {
                 "name": record["Name"].strip(),
-                "check_in": record["Check-in "].strip(),
+                "check_in": record["Check-in"].strip(),
                 "check_out": record["Check-out"].strip()
             }
             for record in records if record["Name"]
