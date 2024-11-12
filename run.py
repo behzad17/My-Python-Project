@@ -94,7 +94,7 @@ class HotelManagement:
             worksheet.clear()
             worksheet.append_row(["Room", "Name", "Check-in", "Check-out"])
             for record in update_records:
-                worksheet.append_row([record["Room"], record["Name", record["Check-in"], record["Check-out"]])
+                worksheet.append_row([record["Room"], record["Name"], record["Check-in"], record["Check-out"]])
             print(f"Guest checked out from {room}")
         else:
             print(f"Room {room} is not currently reserved")
