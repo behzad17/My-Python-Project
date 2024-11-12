@@ -47,3 +47,14 @@ class HotelManagement:
         print("Available rooms in the hotel:")
         for room in self.rooms:
             print(room)
+    def display_available_rooms(self):
+        # Find rooms that are not reserved
+        available_rooms = [room for room in self.rooms if room not in self.reservations]
+        
+        # Print the list of available rooms
+        if available_rooms:
+            print("Available rooms:")
+            for room in available_rooms:
+                print(room)
+        else:
+            print("No rooms available")
