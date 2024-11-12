@@ -96,3 +96,30 @@ class HotelManagement:
         rooms_worksheet = SHEET.worksheet("rooms")
         rooms_worksheet.append_row(data)
         print("Rooms worksheet updated successfully.\n")
+
+rooms = SHEET.worksheet("rooms")    
+data = rooms.get_all_values()
+print(data)
+
+if __name__ == "__main__":
+    # Initialize hotel management system
+    hotel = HotelManagement()
+
+    # Define check-in and check-out dates
+    check_in = datetime.date(2024, 10, 26)
+    check_out = datetime.date(2024, 10, 30)
+
+    # Display available rooms
+    hotel.display_available_rooms()
+
+    # Make a reservation
+    hotel.make_reservation("Behzad Javadian", "Room1", check_in, check_out)
+
+    # Display available rooms again
+    hotel.display_available_rooms()
+
+    # Check out a guest
+    hotel.check_out_guest("Room1")
+
+    # Display available rooms one last time
+    hotel.display_available_rooms()
