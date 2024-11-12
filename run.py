@@ -12,8 +12,15 @@ SCOPED_CREDS = CREDS.with_scopes(SCOPE)
 GSPREAD_CLIENT = gspread.authorize(SCOPED_CREDS)
 SHEET = GSPREAD_CLIENT.open('hotel-management')
 
-rooms = SHEET.worksheet('rooms')
+# Define the HotelManagement class
+class HotelManagement:
+    def __init__(self):
+        # Initialize rooms in the hotel (20 rooms total)
+        self.rooms = [f"Room {i}" for i in range(1, 21)]
+        
+        # Initialize an empty dictionary for reservations
+        self.reservations = {}
 
-data = rooms.get_all_values()
-
-print(data)
+        # Load existing reservations from the Google Sheet
+        self.get_reservations_from_sheet()
+        
