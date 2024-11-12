@@ -76,3 +76,13 @@ class HotelManagement:
         
         # Refresh reservations from the sheet
         self.get_reservations_from_sheet()
+
+
+    def check_out_guest(self, room):
+        # Check if the room is currently reserved
+        if room in self.reservations:
+            # Remove the reservation
+            del self.reservations[room]
+            print(f"Guest checked out from {room}")
+        else:
+            print(f"Room {room} is not currently reserved")
