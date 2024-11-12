@@ -18,7 +18,7 @@ SHEET = GSPREAD_CLIENT.open('hotel-management')
 class HotelManagement:
     def __init__(self):
         # Initialize rooms in the hotel (5 rooms total)
-        self.rooms = [f"Room {i}" for i in range(1, 6)]
+        self.rooms = [f"Room{i}" for i in range(1, 6)]
         
         # Initialize an empty dictionary for reservations
         self.reservations = {}
@@ -36,7 +36,7 @@ class HotelManagement:
         
         # Map reservations into a structured dictionary
         self.reservations = {
-            record["Room"].replace(" ", ""): {
+            record["Room"].strip(): {
                 "name": record["Name"].strip(),
                 "check_in": record["Check-in"].strip(),
                 "check_out": record["Check-out"].strip()
@@ -70,7 +70,7 @@ class HotelManagement:
             
             # Add the reservation to the Google Sheet
             worksheet = SHEET.worksheet("rooms")
-            worksheet.append_row([name, room, str(check_in), str(check_out)])
+            worksheet.append_row([room, name, str(check_in), str(check_out)])
             
             print(f"Room {room} reserved for {name} from {check_in} to {check_out}")
         else:
@@ -81,6 +81,7 @@ class HotelManagement:
 
 
     def check_out_guest(self, room):
+        room = room.replace(" ", "")
         # Check if the room is currently reserved
         if room in self.reservations:
             # Remove the reservation
@@ -88,12 +89,12 @@ class HotelManagement:
             worksheet =SHEET.worksheet("rooms")
             records = worksheet.get_all_records()
 
-            update_records = [record for record in records if record["Room"].strip() !=room.strip()]
+            update_records = [record for record in records if record["Room"].strip() != room.strip()]
 
             worksheet.clear()
-            worksheet.append_row(["Name", "Check-in", "Check-out", "Room"])
+            worksheet.append_row(["Room", "Name", "Check-in", "Check-out"])
             for record in update_records:
-                worksheet.append_row([record["Name"], record["Check-in"], record["Check-out"], record["Room"]])
+                worksheet.append_row([record["Room"], record["Name", record["Check-in"], record["Check-out"]])
             print(f"Guest checked out from {room}")
         else:
             print(f"Room {room} is not currently reserved")
