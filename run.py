@@ -115,6 +115,8 @@ data = rooms.get_all_values()
 print(data)
 
 if __name__ == "__main__":
+    name = input("enter guest's name: ")
+    room = input("Enter room number (e.g., Room3): ")
     # Initialize hotel management system
     hotel = HotelManagement()
 
@@ -124,13 +126,13 @@ if __name__ == "__main__":
     # Define check-in and check-out dates
     check_in = datetime.date(2024, 11, 12)
     check_out = datetime.date(2024, 11, 15)
-    hotel.make_reservation("John Doe", "Room3", check_in, check_out)
+    hotel.make_reservation(name, room, check_in, check_out)
 
     # Display available room again
     hotel.display_available_rooms()
 
     # Check out a guest
-    hotel.check_out_guest("Room3")
+    hotel.check_out_guest(room)
 
     # Display available room one last time
     hotel.display_available_rooms()
