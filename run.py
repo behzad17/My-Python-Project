@@ -58,3 +58,21 @@ class HotelManagement:
                 print(room)
         else:
             print("No rooms available")
+
+
+    def make_reservation(self, name, room, check_in, check_out):
+        # Check if the room is available
+        if room in self.rooms and room not in self.reservations:
+            # Add reservation details to the dictionary
+            self.reservations[room] = {"name": name, "check_in": check_in, "check_out": check_out}
+            
+            # Add the reservation to the Google Sheet
+            worksheet = SHEET.worksheet("rooms")
+            worksheet.append_row([name, room, str(check_in), str(check_out)])
+            
+            print(f"Room {room} reserved for {name} from {check_in} to {check_out}")
+        else:
+            print(f"Room {room} is not available")
+        
+        # Refresh reservations from the sheet
+        self.get_reservations_from_sheet()
