@@ -63,6 +63,7 @@ class HotelManagement:
 
 
     def make_reservation(self, name, room, check_in, check_out):
+        room = room.replace(" ", "")
         # Check if the room is available
         if room in self.rooms and room not in self.reservations:
             # Add reservation details to the dictionary
@@ -117,21 +118,19 @@ if __name__ == "__main__":
     # Initialize hotel management system
     hotel = HotelManagement()
 
-    # Define check-in and check-out dates
-    check_in = datetime.date(2024, 10, 26)
-    check_out = datetime.date(2024, 10, 30)
-
     # Display available rooms
     hotel.display_available_rooms()
 
-    # Make a reservation
-    hotel.make_reservation("Behzad Javadian", "Room1", check_in, check_out)
+    # Define check-in and check-out dates
+    check_in = datetime.date(2024, 11, 12)
+    check_out = datetime.date(2024, 11, 15)
+    hotel.make_reservation("John Doe", "Room3", check_in, check_out)
 
     # Display available room again
     hotel.display_available_rooms()
 
     # Check out a guest
-    hotel.check_out_guest("Room1")
+    hotel.check_out_guest("Room3")
 
     # Display available room one last time
     hotel.display_available_rooms()
