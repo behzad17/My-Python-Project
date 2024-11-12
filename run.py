@@ -115,11 +115,11 @@ if __name__ == "__main__":
     # Make a reservation
     hotel.make_reservation("Behzad Javadian", "Room1", check_in, check_out)
 
-    # Display available rooms again
+    # Display available room again
     hotel.display_available_rooms()
 
     # Check out a guest
     hotel.check_out_guest("Room1")
 
-    # Display available rooms one last time
+    # Display available room one last time
     hotel.display_available_rooms()
