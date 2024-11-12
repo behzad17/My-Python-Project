@@ -86,3 +86,13 @@ class HotelManagement:
             print(f"Guest checked out from {room}")
         else:
             print(f"Room {room} is not currently reserved")
+
+
+    def update_rooms_worksheet(self, data):
+        """
+        Update rooms worksheet, add new row with the list data provided
+        """
+        print("Updating rooms worksheet...\n")
+        rooms_worksheet = SHEET.worksheet("rooms")
+        rooms_worksheet.append_row(data)
+        print("Rooms worksheet updated successfully.\n")
