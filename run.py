@@ -42,3 +42,8 @@ class HotelManagement:
             for record in records if record["Name"]
         }
     
+    def display_rooms(self):
+        # Print the list of all rooms in the hotel
+        print("Available rooms in the hotel:")
+        for room in self.rooms:
+            print(room)
