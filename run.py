@@ -41,7 +41,7 @@ class HotelManagement:
                 "check_in": record["Check-in"].strip(),
                 "check_out": record["Check-out"].strip()
             }
-            for record in records if record["Name" and record["Check-in"] and record["Check-out"]
+            for record in records if record["Name"] and record["Check-in"] and record["Check-out"]
         }
     
     def display_rooms(self):
