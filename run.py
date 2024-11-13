@@ -141,41 +141,41 @@ if __name__ == "__main__":
     hotel = HotelManagement()
 
     while True:
-    print("\n--- Hotel Management System ---")
-    print("1. Show reserved rooms")
-    print("2. Show available rooms")
-    print("3. Show checked-out rooms")
-    print("4. Make a new reservation")
-    print("5. Check out a guest")
-    print("6. Exit")
+        print("\n--- Hotel Management System ---")
+        print("1. Show reserved rooms")
+        print("2. Show available rooms")
+        print("3. Show checked-out rooms")
+        print("4. Make a new reservation")
+        print("5. Check out a guest")
+        print("6. Exit")
     # get the user`s choice
-    choice = input("Enter your choice: ")
+        choice = input("Enter your choice: ")
 
-    if choice == "1":
-        hotel.display_reserved_rooms()
-    elif choice == "2":
-        hotel.display_available_rooms()
-    elif choice == "3":
-        hotel.display_checked_out_rooms()
-    elif choice == "4":
+        if choice == "1":
+            hotel.display_reserved_rooms()
+        elif choice == "2":
+            hotel.display_available_rooms()
+        elif choice == "3":
+            hotel.display_checked_out_rooms()
+        elif choice == "4":
 
    # collect reservation and room number from user
-    name = input("enter guest's name: ")
-    room = input("Enter room number (e.g., Room3): ")
-    check_in = input("Enter check-in date (YYYY-MM-DD)")
-    check_out = input("Enter check-out date (YYYY-MM-DD)")
-    hotel.make_reservation(name, room, check_in, check_out)
+            name = input("enter guest's name: ")
+            room = input("Enter room number (e.g., Room3): ")
+            check_in = input("Enter check-in date (YYYY-MM-DD)")
+            check_out = input("Enter check-out date (YYYY-MM-DD)")
+            hotel.make_reservation(name, room, check_in, check_out)
 
-    elif choice == "5":
-        room = input("Enter room number to check out (e.g., Room3): ")
-        hotel.check_out_guest(room)
-    elif choice == "6":
+        elif choice == "5":
+            room = input("Enter room number to check out (e.g., Room3): ")
+            hotel.check_out_guest(room)
+        elif choice == "6":
 
         # Exit the program"
-        print("Exit")
-        break
-    slse:    
-        print("Invalid choice. Try again.")        
+            print("Exit")
+            break
+        else:    
+            print("Invalid choice. Try again.")        
 
     
 
