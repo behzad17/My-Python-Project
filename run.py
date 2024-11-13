@@ -71,7 +71,7 @@ class HotelManagement:
             print("No rooms available")
 
 
-def display_checked_out_rooms(self):
+    def display_checked_out_rooms(self):
         """
         Show checked_out rooms
         """
