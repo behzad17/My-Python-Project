@@ -142,11 +142,11 @@ if __name__ == "__main__":
 
     while True:
         print("\n--- Hotel Management System ---")
-        print("1. Show reserved rooms")
-        print("2. Show available rooms")
-        print("3. Show checked-out rooms")
-        print("4. Make a new reservation")
-        print("5. Check out a guest")
+        print("1. Reserved rooms")
+        print("2. Available rooms")
+        print("3. Checked-out rooms")
+        print("4. New reservation")
+        print("5. Check out")
         print("6. Exit")
     # get the user`s choice
         choice = input("Enter your choice: ")
