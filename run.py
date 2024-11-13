@@ -22,15 +22,17 @@ class HotelManagement:
         
         # Initialize an empty dictionary for reservations
         self.reservations = {}
-        
-        # Checked_out roos list
+
+        # Checked_out rooms list
         self.checked_out_rooms = []
 
         # Load existing reservations from the Google Sheet
         self.get_reservations_from_sheet()
 
     def get_reservations_from_sheet(self):
-        # Access the worksheet named "rooms"
+        """
+         give the access to worksheet named "rooms"
+        """ 
         worksheet = SHEET.worksheet("rooms")
         
 
@@ -47,11 +49,14 @@ class HotelManagement:
             for record in records if record["Name"] and record["Check-in"] and record["Check-out"]
         }
     
-    def display_rooms(self):
-        # Print the list of all rooms in the hotel
-        print("Available rooms in the hotel:")
-        for room in self.rooms:
-            print(room)
+    def display_reserved_rooms(self):
+        """
+        Print the list of reserved rooms in the hotel
+        """
+        print("Reserved rooms:")
+        for room details in self.reservations.items():
+            print(f"{room}: Guest {details['name']} from {details['check_in']} to {details['check_out']}")
+
     def display_available_rooms(self):
         # Find rooms that are not reserved
         available_rooms = [room for room in self.rooms if room not in self.reservations]
@@ -59,8 +64,9 @@ class HotelManagement:
         # Print the list of available rooms
         if available_rooms:
             print("Available rooms:")
-            for room in available_rooms:
-                print(room)
+            if available_rooms:
+                for room in available_rooms:
+                    print(room)
         else:
             print("No rooms available")
 
