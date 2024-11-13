@@ -13,10 +13,12 @@ The program has a menu to user also.
 5. **Check out a gyest** Remove a reservation when guest leaves.
 
 ### How the code works
+
 **Local Data Management** 
 - The program keeps room reservation in a list inside the code and this list updates automatically when i add a new reservation or checked out a guest.
+
 **Google Sheets Conection**
-When the program connects to a Google Sheet, any changes are saved in the google sheet.
+- When the program connects to a Google Sheet, any changes are saved in the google sheet.
 
 
 ## Requirements
@@ -29,3 +31,7 @@ When the program connects to a Google Sheet, any changes are saved in the google
 I use a google sheet named hotel-management and worksheet named "rooms"
 
 
+## link to deploy
+You can find the deployed link of program on **Heroku** here: [Heroku](https://my-python-project-33005f6b5ac8.herokuapp.com/)
+## link to GitHub repository
+You can find the depository link on **GitHub** here: [GitHub](https://github.com/behzad17/My-Python-Project)
