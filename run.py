@@ -54,7 +54,7 @@ class HotelManagement:
         Print the list of reserved rooms in the hotel
         """
         print("Reserved rooms:")
-        for room details in self.reservations.items():
+        for room, details in self.reservations.items():
             print(f"{room}: Guest {details['name']} from {details['check_in']} to {details['check_out']}")
 
     def display_available_rooms(self):
