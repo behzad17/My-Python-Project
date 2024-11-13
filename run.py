@@ -140,7 +140,7 @@ print(data)
 if __name__ == "__main__":
     hotel = HotelManagement()
 
-    whil True:
+    while True:
     print("\n--- Hotel Management System ---")
     print("1. Show reserved rooms")
     print("2. Show available rooms")
