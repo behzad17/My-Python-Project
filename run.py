@@ -88,13 +88,20 @@ class HotelManagement:
         # Check if the room is available
         if room in self.rooms and room not in self.reservations:
             # Add reservation details to the dictionary
-            self.reservations[room] = {"name": name, "check_in": check_in, "check_out": check_out}
+            self.reservations[room] = {
+                "name": name, 
+                "check_in": check_in, 
+                "check_out": check_out
+            }
             
+            try:
             # Add the reservation to the Google Sheet
-            worksheet = SHEET.worksheet("rooms")
-            worksheet.append_row([room, name, str(check_in), str(check_out)])
+                worksheet = SHEET.worksheet("rooms")
+                worksheet.append_row([room, name, str(check_in), str(check_out)])
             
-            print(f"Room {room} reserved for {name} from {check_in} to {check_out}")
+                print(f"Room {room} reserved for {name} from {check_in} to {check_out}")
+            except Exeption as e:
+                print(f"Error writing to Google Sheet: {e}")    
         else:
             print(f"Room {room} is not available")
 
@@ -125,17 +132,6 @@ class HotelManagement:
         else:
             print(f"Room {room} is not currently reserved")
 
-"""
-    def update_rooms_worksheet(self, data):
-        print("Updating rooms worksheet...\n")
-        rooms_worksheet = SHEET.worksheet("rooms")
-        rooms_worksheet.append_row(data)
-        print("Rooms worksheet updated successfully.\n")
-
-rooms = SHEET.worksheet("rooms")    
-data = rooms.get_all_values()
-print(data)
-"""
 # running the code
 if __name__ == "__main__":
     hotel = HotelManagement()
@@ -148,7 +144,7 @@ if __name__ == "__main__":
         print("4. New reservation")
         print("5. Check out")
         print("6. Exit")
-    # get the user`s choice
+        # get the user`s choice
         choice = input("Enter your choice: ")
 
         if choice == "1":
@@ -158,8 +154,7 @@ if __name__ == "__main__":
         elif choice == "3":
             hotel.display_checked_out_rooms()
         elif choice == "4":
-
-   # collect reservation and room number from user
+            # collect reservation and room number from user
             name = input("enter guest's name: ")
             room = input("Enter room number (e.g., Room3): ")
             check_in = input("Enter check-in date (YYYY-MM-DD)")
@@ -179,19 +174,4 @@ if __name__ == "__main__":
 
     
 
-    """
-     Display available rooms
-    hotel.display_available_rooms()
-
-    # Define check-in and check-out dates
     
-
-    # Display available room again
-    hotel.display_available_rooms()
-
-    # Check out a guest
-    hotel.check_out_guest(room)
-
-    # Display available room one last time
-    hotel.display_available_rooms()
-    """
