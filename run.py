@@ -110,10 +110,13 @@ def display_checked_out_rooms(self):
 
             # Remove the reservation
             del self.reservations[room]
+
+            # Add the room to checked-out list
             self.checked_out_rooms.append(room)
             worksheet = SHEET.worksheet("rooms")
             records = worksheet.get_all_records()
             update_records = [record for record in records if record["Room"].strip() != room.strip()]
+            # Clear the worksheet and update it
             worksheet.clear()
             worksheet.append_row(["Room", "Name", "Check-in", "Check-out"])
             for record in update_records:
