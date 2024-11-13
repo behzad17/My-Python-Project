@@ -1,31 +1,31 @@
-![CI logo](https://codeinstitute.s3.amazonaws.com/fullstack/ci_logo_small.png)
 
-Welcome,
+# Hotel Management System
 
-This is the Code Institute student template for deploying your third portfolio project, the Python command-line project. The last update to this file was: **May 14, 2024**
+this is a Python project to manage hotel room reservation for a little hotel with 5 rooms. In the project i use **Google Sheets** to update data such as reservation , available rooms and check-in/outs.
+The program has a menu to user also.
 
-## Reminders
+## Features
 
-- Your code must be placed in the `run.py` file
-- Your dependencies must be placed in the `requirements.txt` file
-- Do not edit any of the other files or your code may not deploy properly
+1. **Reserved Rooms**: To see which rooms have been reserved.
+2. **Available rooms** To see which rooms are free to bookning.
+3. **Checked-Out rooms** To see rooms that have been checked out.
+4. **New reservation** To do a reservation by guest.
+5. **Check out a gyest** Remove a reservation when guest leaves.
 
-## Creating the Heroku app
+### How the code works
+**Local Data Management** 
+- The program keeps room reservation in a list inside the code and this list updates automatically when i add a new reservation or checked out a guest.
+**Google Sheets Conection**
+When the program connects to a Google Sheet, any changes are saved in the google sheet.
 
-When you create the app, you will need to add two buildpacks from the _Settings_ tab. The ordering is as follows:
 
-1. `heroku/python`
-2. `heroku/nodejs`
+## Requirements
 
-You must then create a _Config Var_ called `PORT`. Set this to `8000`
+1. **google-auth==2.36.0**
+2. **google-auth-oauthlib==1.2.1**
+3. **gspread==6.1.4**
 
-If you have credentials, such as in the Love Sandwiches project, you must create another _Config Var_ called `CREDS` and paste the JSON into the value field.
+## Google Sheet
+I use a google sheet named hotel-management and worksheet named "rooms"
 
-Connect your GitHub repository and deploy as normal.
-
-## Constraints
-
-The deployment terminal is set to 80 columns by 24 rows. That means that each line of text needs to be 80 characters or less otherwise it will be wrapped onto a second line.
-
----
 
