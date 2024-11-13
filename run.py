@@ -22,6 +22,9 @@ class HotelManagement:
         
         # Initialize an empty dictionary for reservations
         self.reservations = {}
+        
+        # Checked_out roos list
+        self.checked_out_rooms = []
 
         # Load existing reservations from the Google Sheet
         self.get_reservations_from_sheet()
