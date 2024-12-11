@@ -28,7 +28,7 @@ The program has a menu to user also.
 3. **gspread==6.1.4**
 
 ## Google Sheet
-I use a google sheet named hotel-management and worksheet named "rooms"
+I use a google sheet named hotel-management and worksheet named "rooms".
 
 
 ## link to deploy
