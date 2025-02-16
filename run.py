@@ -123,11 +123,11 @@ class HotelManagement:
         if room in self.reservations:
 
             # Remove the reservation
-            del self.reservations[room]
-            self.get_reservations_from_sheet()
+            #del self.reservations[room]
+            #self.get_reservations_from_sheet()
 
             # Add the room to checked-out list
-            self.checked_out_rooms.append(room)
+            #self.checked_out_rooms.append(room)
             try:
                 worksheet = SHEET.worksheet("rooms")
                 records = worksheet.get_all_records()
@@ -138,6 +138,9 @@ class HotelManagement:
                 for record in update_records:
                     worksheet.append_row([record["Room"], record["Name"], record["Check-in"], record["Check-out"]])
 
+                del self.reservations[room]
+                self.checked_out_rooms.append(room)
+                
                 print(f"Guest checked out from room {room}.")
                 self.get_reservations_from_sheet()
 
