@@ -44,8 +44,10 @@ class HotelManagement:
                 "check_in": record["Check-in"].strip(),
                 "check_out": record["Check-out"].strip()
             }
-            for record in records if record["Name"] and record["Check-in"] and record["Check-out"]
+            for record in records 
+            if record["Room"].strip() and record["Name"].strip() and record["Check-in"].strip() and record["Check-out"].strip()
         }
+
     
     def display_reserved_rooms(self):
         """
@@ -105,12 +107,12 @@ class HotelManagement:
             
                 print(f"Room {room} reserved for {name} from {check_in} to {check_out}")
                 self.get_reservations_from_sheet()
-            except Exeption as e:
+            except Exception as e:
                 print(f"Error writing to Google Sheet: {e}")    
         else:
-            print(f"Room {room} is not available.")
+            print(f"Room {room} is already reserved by another guest. Please choose a different room.")
 
-
+   
     def check_out_guest(self, room):
         """
         Check out a guest and update the list.
@@ -122,6 +124,7 @@ class HotelManagement:
 
             # Remove the reservation
             del self.reservations[room]
+            self.get_reservations_from_sheet()
 
             # Add the room to checked-out list
             self.checked_out_rooms.append(room)
@@ -136,7 +139,9 @@ class HotelManagement:
                     worksheet.append_row([record["Room"], record["Name"], record["Check-in"], record["Check-out"]])
 
                 print(f"Guest checked out from room {room}.")
-            except Excepyion as e:
+                self.get_reservations_from_sheet()
+
+            except Exception as e:
                 print(f"Error updating Google Shet: {e}")
 
         else:
@@ -176,13 +181,7 @@ if __name__ == "__main__":
             room = input("Enter room number to check out (e.g., Room3): ")
             hotel.check_out_guest(room)
         elif choice == "6":
-
-        # Exit the program"
             print("Exit")
             break
         else:    
-            print("Invalid choice. Try again.")        
-
-    
-
-    
+            print("Invalid choice. Try again.")
