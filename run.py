@@ -17,17 +17,19 @@ SHEET = GSPREAD_CLIENT.open('hotel-management')
 
 # Define the HotelManagement class
 class HotelManagement:
+
+
     def __init__(self):
-        # Initialize rooms in the hotel (5 rooms total)
+        #Initialize rooms in the hotel (5 rooms total)
         self.rooms = [f"Room{i}" for i in range(1, 6)]
         
-        # Initialize an empty dictionary for reservations
+        #Initialize an empty dictionary for reservations
         self.reservations = {}
 
-        # Checked_out rooms list
+        #Checked_out rooms list
         self.checked_out_rooms = []
 
-        # Load existing reservations from the Google Sheet
+        #Load existing reservations from the Google Sheet
         self.get_reservations_from_sheet()
 
     def get_reservations_from_sheet(self):
@@ -37,7 +39,7 @@ class HotelManagement:
         worksheet = SHEET.worksheet("rooms")
         records = worksheet.get_all_records()
         
-        # Map reservations into a structured dictionary
+        #Map reservations into a structured dictionary
         self.reservations = {
             record["Room"].strip(): {
                 "name": record["Name"].strip(),
@@ -61,9 +63,9 @@ class HotelManagement:
             print("No rooms are currently reserved.")
 
     def display_available_rooms(self):
-        # Find rooms that are not reserved
+        #Find rooms that are not reserved
         available_rooms = [room for room in self.rooms if room not in self.reservations]
-        # Print the list of available rooms
+        #Print the list of available rooms
         print("Available rooms:")
         if available_rooms:
             for room in available_rooms:
@@ -92,14 +94,14 @@ class HotelManagement:
         """
         room = room.strip()
         if room in self.rooms and room not in self.reservations:
-            # Add reservation details to the dictionary
+            #Add reservation details to the dictionary
             self.reservations[room] = {
                 "name": name, 
                 "check_in": check_in, 
                 "check_out": check_out
             }
             
-              # Add the reservation to the Google Sheet
+              #Add the reservation to the Google Sheet
             try:
           
                 worksheet = SHEET.worksheet("rooms")
@@ -119,20 +121,14 @@ class HotelManagement:
         """
         room = room.strip()
 
-        # Check if the room is currently reserved
+        #Check if the room is currently reserved
         if room in self.reservations:
 
-            # Remove the reservation
-            #del self.reservations[room]
-            #self.get_reservations_from_sheet()
-
-            # Add the room to checked-out list
-            #self.checked_out_rooms.append(room)
             try:
                 worksheet = SHEET.worksheet("rooms")
                 records = worksheet.get_all_records()
                 update_records = [record for record in records if record["Room"].strip() != room.strip()]
-            # Clear the worksheet and update it
+            #Clear the worksheet and update it
                 worksheet.clear()
                 worksheet.append_row(["Room", "Name", "Check-in", "Check-out"])
                 for record in update_records:
@@ -140,7 +136,7 @@ class HotelManagement:
 
                 del self.reservations[room]
                 self.checked_out_rooms.append(room)
-                
+
                 print(f"Guest checked out from room {room}.")
                 self.get_reservations_from_sheet()
 
@@ -150,11 +146,13 @@ class HotelManagement:
         else:
             print(f"Room {room} is not currently reserved.")
 
-# running the code
+#running the code
 if __name__ == "__main__":
     hotel = HotelManagement()
 
     while True:
+
+
         print("\n--- Hotel Management System ---")
         print("1. Reserved rooms")
         print("2. Available rooms")
@@ -163,7 +161,7 @@ if __name__ == "__main__":
         print("5. Check out")
         print("6. Exit")
 
-        # get the user`s choice
+        #get the user`s choice
         choice = input("Enter your choice: ")
 
         if choice == "1":
@@ -173,7 +171,7 @@ if __name__ == "__main__":
         elif choice == "3":
             hotel.display_checked_out_rooms()
         elif choice == "4":
-            # collect reservation and room number from user
+            #collect reservation and room number from user
             name = input("enter guest's name: ")
             room = input("Enter room number (e.g., Room3): ")
             check_in = input("Enter check-in date (YYYY-MM-DD): ")
@@ -188,3 +186,4 @@ if __name__ == "__main__":
             break
         else:    
             print("Invalid choice. Try again.")
+            
