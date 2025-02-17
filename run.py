@@ -93,36 +93,61 @@ class HotelManagement:
         else:
             print("No rooms have been checked out.")
 
-    def make_reservation(self, name, room, check_in, check_out):
+    def make_reservation(self, name, room):
         """
         make a reservaition for a guest
         """
         room = room.strip()
-        if room in self.rooms and room not in self.reservations:
-            # Add reservation details to the dictionary
-            self.reservations[room] = {
-                "name": name,
-                "check_in": check_in,
-                "check_out": check_out
-            }
+        if room in self.rooms:
+            if room in self.reservation:
 
-            # Add the reservation to the Google Sheet
-            try:
-
-                worksheet = SHEET.worksheet("rooms")
-                worksheet.append_row(
-                    [room, name, str(check_in), str(check_out)])
-
+                existing_reservation = self.reservations[room]
                 print(
-                    f"Room {room} reserved for {name}\
-                          from {check_in} to {check_out}")
-                self.get_reservations_from_sheet()
-            except Exception as e:
-                print(f"Error writing to Google Sheet: {e}")
+                    f"⚠️ Room {room} is already reserved by {
+                        existing_reservation['name']} " f"from {
+                        existing_reservation['check_in']} to {
+                        existing_reservation['check_out']}.")
+
+                # new date
+                check_in = input(
+                    "Enter a new check-in date (YYYY-MM-DD): ")
+                check_out = input(
+                    "Enter a new check-out date (YYYY-MM-DD): ")
+
+                # delete older reserve and add new one
+                self.reservations[room] = {
+                    "name": name,
+                    "check_in": check_in,
+                    "check_out": check_out
+                }
+
+                print(f" Room {room} is now reserved for"
+                      f"{name} from {check_in} to {check_out}")
+
+            else:
+                # if room is available
+                check_in = input("Enter check-in date (YYYY-MM-DD): ")
+                check_out = input("Enter check-out date (YYYY-MM-DD): ")
+
+                self.reservations[room] = {
+                        "name": name,
+                        "check_in": check_in,
+                        "check_out": check_out
+                    }
+
+                print(f" Room {room} is now reserved for {name} from {check_in} to {check_out}")
+
+
+                # uppdate Google Sheet
+                try:
+                    worksheet = SHEET.worksheet("rooms")
+                    worksheet.append_row([room, name, check_in, check_out])
+                    self.get_reservations_from_sheet()
+                except Exception as e:
+                    print(f"Error updating Google Sheet: {e}")
+
         else:
-            print(
-                f"Room {room} is already reserved by\
-    another guest. Please choose a different room.")
+            print(f"❌ Room {room} does not exist. Please enter a valid room number.")
 
     def check_out_guest(self, room):
         """
@@ -192,9 +217,7 @@ if __name__ == "__main__":
             # collect reservation and room number from user
             name = input("enter guest's name: ")
             room = input("Enter room number (e.g., Room3): ")
-            check_in = input("Enter check-in date (YYYY-MM-DD): ")
-            check_out = input("Enter check-out date (YYYY-MM-DD): ")
-            hotel.make_reservation(name, room, check_in, check_out)
+            hotel.make_reservation(name, room)
 
         elif choice == "5":
             room = input("Enter room number to check out (e.g., Room3): ")
