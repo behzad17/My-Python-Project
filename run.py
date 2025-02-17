@@ -122,7 +122,7 @@ class HotelManagement:
         else:
             print(
                 f"Room {room} is already reserved by\
-                      another guest. Please choose a different room.")
+            another guest. Please choose a different room.")
 
     def check_out_guest(self, room):
         """
