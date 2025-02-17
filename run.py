@@ -42,16 +42,18 @@ class HotelManagement:
         records = worksheet.get_all_records()
 
         # Map reservations into a structured dictionary
-        self.reservations = {
-            record["Room"].strip(): {
-                "name": record["Name"].strip(),
-                "check_in": record["Check-in"].strip(),
-                "check_out": record["Check-out"].strip()
-            }
-            for record in records
-            if record["Room"].strip() and record["Name"].strip() and
-            record["Check-in"].strip() and record["Check-out"].strip()
-        }
+        self.reservations = {}  # ریست کردن لیست رزروها
+
+        for record in records:
+            room = record["Room"].strip()
+            if room and record["Name"].strip() and record["Check-in"].strip() and record["Check-out"].strip():
+                if room not in self.reservations:
+                    self.reservations[room] = []  # ایجاد لیست برای هر اتاق
+                self.reservations[room].append({
+                    "name": record["Name"].strip(),
+                    "check_in": record["Check-in"].strip(),
+                    "check_out": record["Check-out"].strip()
+                })
 
     def display_reserved_rooms(self):
         """
@@ -59,12 +61,11 @@ class HotelManagement:
         """
         print("Reserved rooms:")
         if self.reservations:
-            for room, details in self.reservations.items():
-                print(
-                    f"{room}: Guest {
-                        details['name']} from {
-                        details['check_in']} to {
-                        details['check_out']}")
+            for room, reservations in self.reservations.items():
+                print(f"{room}:")
+                for res in reservations:
+                    print(f"  - Guest {res['name']} from {res['check_in']} to {res['check_out']}")
+
         else:
             print("No rooms are currently reserved.")
 
@@ -99,9 +100,9 @@ class HotelManagement:
         """
         room = room.strip()
         if room in self.rooms:
-            if room in self.reservation:
+            if room in self.reservations:
 
-                existing_reservation = self.reservations[room]
+                existing_reservation = self.reservations[room][0]
                 print(
                     f"⚠️ Room {room} is already reserved by {
                         existing_reservation['name']} " f"from {
@@ -115,11 +116,13 @@ class HotelManagement:
                     "Enter a new check-out date (YYYY-MM-DD): ")
 
                 # delete older reserve and add new one
-                self.reservations[room] = {
+                if room not in self.reservations:
+                    self.reservations[room] = []
+                self.reservations[room].append({
                     "name": name,
                     "check_in": check_in,
                     "check_out": check_out
-                }
+                })
 
                 print(f" Room {room} is now reserved for"
                       f"{name} from {check_in} to {check_out}")
@@ -157,34 +160,39 @@ class HotelManagement:
 
         # Check if the room is currently reserved
         if room in self.reservations:
-
             try:
                 worksheet = SHEET.worksheet("rooms")
                 records = worksheet.get_all_records()
-                update_records = [
-                    record for record in records if record["Room"]
-                    .strip() != room.strip()]
-            # Clear the worksheet and update it
+
+                # حذف فقط رزرو موردنظر از لیست Google Sheet
+                update_records = []
+                removed = False  # برای بررسی اینکه رزرو حذف شده است یا نه
+
+                for record in records:
+                    if record["Room"].strip() == room.strip() and not removed:
+                        removed = True  # حذف فقط یک رزرو (اولین رزرو قدیمی‌تر)
+                    else:
+                        update_records.append(record)
+
+                # پاک‌کردن اطلاعات در Google Sheet و دوباره ذخیره‌کردن لیست اصلاح‌شده
                 worksheet.clear()
                 worksheet.append_row(["Room", "Name", "Check-in", "Check-out"])
                 for record in update_records:
-                    worksheet.append_row(
-                        [
-                            record["Room"],
-                            record["Name"],
-                            record["Check-in"],
-                            record["Check-out"]
-                        ]
-                    )
+                    worksheet.append_row([record["Room"], record["Name"], record["Check-in"], record["Check-out"]])
 
-                del self.reservations[room]
+                # حذف رزرو از دیکشنری `self.reservations`
+                if len(self.reservations[room]) > 1:
+                    self.reservations[room].pop(0)  # حذف فقط اولین رزرو (قدیمی‌ترین)
+                else:
+                    del self.reservations[room]  # اگر فقط یک رزرو باقی مانده بود، کل اتاق را حذف کند
+
                 self.checked_out_rooms.append(room)
 
                 print(f"Guest checked out from room {room}.")
                 self.get_reservations_from_sheet()
 
             except Exception as e:
-                print(f"Error updating Google Shet: {e}")
+                print(f"Error updating Google Sheet: {e}")
 
         else:
             print(f"Room {room} is not currently reserved.")
