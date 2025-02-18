@@ -75,10 +75,10 @@ class HotelManagement:
             for room, reservations in self.reservations.items():
                     print(f"\n{room}:")
                     for res in reservations:
-                        print(f" Guest {res['name']} from {res['check_in']} to {res['check_out']}")
+                        print(f"   Guest {res['name']} from {res['check_in']} to {res['check_out']}")
 
         else:
-            print("No rooms are currently reserved.")
+            print("  No rooms are currently reserved.")
 
     def display_available_rooms(self):
         # display rooms that are not reserved
@@ -86,24 +86,24 @@ class HotelManagement:
         available_rooms = [
             room for room in self.rooms if room not in self.reservations]
         # Print the list of available rooms
-        print("Available rooms:")
+        print("  Available rooms:")
         if available_rooms:
             for room in available_rooms:
                 print(room)
 
         else:
-            print("No rooms available.")
+            print("  No rooms available.")
 
     def display_checked_out_rooms(self):
         """
         Show checked-out rooms
         """
-        print("checked-out rooms:")
+        print("  checked-out rooms:")
         if self.checked_out_rooms:
             for room in self.checked_out_rooms:
                 print(room)
         else:
-            print("No rooms have been checked out.")
+            print("  No rooms have been checked out.")
 
 
     def make_reservation(self, name, room, check_in, check_out):
@@ -114,7 +114,7 @@ class HotelManagement:
         if room in self.reservations:
             for res in self.reservations[room]:
                 if check_in <= res["check_out"] and check_out >= res["check_in"]:
-                    print(f"❌ Room {room} is already reserved from {res['check_in']} to {res['check_out']}.")
+                    print(f"  ❌ Room {room} is already reserved from {res['check_in']} to {res['check_out']}.")
                     return
 
         # add new reservation
@@ -127,7 +127,7 @@ class HotelManagement:
             "check_out": check_out
         })
 
-        print(f"✅ Room {room} is now reserved for {name} from {check_in} to {check_out}.")
+        print(f"  ✅ Room {room} is now reserved for {name} from {check_in} to {check_out}.")
 
    
         try:
@@ -135,7 +135,7 @@ class HotelManagement:
             worksheet.append_row([room, name, check_in, check_out])
             self.get_reservations_from_sheet()
         except Exception as e:
-            print(f"❌ Error updating Google Sheet: {e}")
+            print(f"  ❌ Error updating Google Sheet: {e}")
 
 
     def check_out_guest(self, room):
@@ -152,9 +152,9 @@ class HotelManagement:
 
 
                 # Show all reservations for the room
-                print(f"\n📌 Room {room} has the following reservations:")
+                print(f"  \n📌 Room {room} has the following reservations:")
                 for i, res in enumerate(self.reservations[room], start=1):
-                    print(f"{i}. Guest {res['name']} from {res['check_in']} to {res['check_out']}")
+                    print(f"  {i}. Guest {res['name']} from {res['check_in']} to {res['check_out']}")
 
 
                 # Ask user which reservation to remove
@@ -178,7 +178,7 @@ class HotelManagement:
                     for record in update_records:
                         worksheet.append_row([record["Room"], record["Name"], record["Check-in"], record["Check-out"]])
 
-                    print(f"✅ Guest {removed_guest['name']} checked out from Room {room}.")
+                    print(f"  ✅ Guest {removed_guest['name']} checked out from Room {room}.")
 
                   
                     # If no more reservations remain, add room to checked-out list
@@ -189,13 +189,13 @@ class HotelManagement:
                     self.get_reservations_from_sheet()
 
                 else:
-                    print("❌ Invalid choice.")
+                    print("  ❌ Invalid choice.")
 
             except Exception as e:
-                print(f"❌ Error updating Google Sheet: {e}")
+                print(f"  ❌ Error updating Google Sheet: {e}")
 
         else:
-            print(f"Room {room} is not currently reserved.")
+            print(f"  Room {room} is not currently reserved.")
 
 
 # running the code
@@ -204,13 +204,13 @@ if __name__ == "__main__":
 
     while True:
 
-        print("\n--- Hotel Management System ---")
-        print("1. Reserved rooms")
-        print("2. Available rooms")
-        print("3. Checked-out rooms")
-        print("4. New reservation")
-        print("5. Check out")
-        print("6. Exit")
+        print("  \n--- Hotel Management System ---")
+        print("  1. Reserved rooms")
+        print("  2. Available rooms")
+        print("  3. Checked-out rooms")
+        print("  4. New reservation")
+        print("  5. Check out")
+        print("  6. Exit")
 
         # get the user`s choice
         choice = input("Enter your choice: ")
@@ -228,7 +228,7 @@ if __name__ == "__main__":
             room = input("Enter room number (e.g., Room3): ").strip()
 
             while room not in valid_rooms:
-                print("❌ Invalid room number. Please enter a valid room (Room1 - Room5).")
+                print("  ❌ Invalid room number. Please enter a valid room (Room1 - Room5).")
                 room = input("Enter room number (e.g., Room3): ").strip()
 
             check_in = input("Enter check-in date (YYYY-MM-DD): ").strip()
@@ -241,7 +241,7 @@ if __name__ == "__main__":
             room = input("Enter room number to check out (e.g., Room3): ")
             hotel.check_out_guest(room)
         elif choice == "6":
-            print("Exit")
+            print(" Exit")
             break
         else:
-            print("Invalid choice. Try again.")
+            print(" Invalid choice. Try again.")
