@@ -2,22 +2,25 @@ import gspread
 from google.oauth2.service_account import Credentials
 import datetime
 
-
+# Define the required Google API scopes for accessing Google Sheets
 SCOPE = [
     "https://www.googleapis.com/auth/spreadsheets",
     "https://www.googleapis.com/auth/drive.file",
     "https://www.googleapis.com/auth/drive"
 ]
 
+
+# Load Google service account credentials
 CREDS = Credentials.from_service_account_file('creds.json')
 SCOPED_CREDS = CREDS.with_scopes(SCOPE)
 GSPREAD_CLIENT = gspread.authorize(SCOPED_CREDS)
 
+
+# Open the Google Sheet 
 SHEET = GSPREAD_CLIENT.open('hotel-management')
 
+
 # Define the HotelManagement class
-
-
 class HotelManagement:
 
     def __init__(self):
@@ -51,7 +54,8 @@ class HotelManagement:
             check_in = str(record["Check-in"]).strip()
             check_out = str(record["Check-out"]).strip()
 
-          
+                      
+            # Only add valid reservations
             if room and name and check_in and check_out:
                 if room not in self.reservations:
                     self.reservations[room] = [] 
@@ -77,7 +81,7 @@ class HotelManagement:
             print("No rooms are currently reserved.")
 
     def display_available_rooms(self):
-        # Find rooms that are not reserved
+        # display rooms that are not reserved
 
         available_rooms = [
             room for room in self.rooms if room not in self.reservations]
@@ -146,16 +150,20 @@ class HotelManagement:
                 worksheet = SHEET.worksheet("rooms")
                 records = worksheet.get_all_records()
 
-               
+
+                # Show all reservations for the room
                 print(f"\n📌 Room {room} has the following reservations:")
                 for i, res in enumerate(self.reservations[room], start=1):
                     print(f"{i}. Guest {res['name']} from {res['check_in']} to {res['check_out']}")
 
+
+                # Ask user which reservation to remove
                 choice = int(input("\nEnter the number of the guest to check out: "))
                 if 1 <= choice <= len(self.reservations[room]):
-                    removed_guest = self.reservations[room].pop(choice - 1)  
+                    removed_guest = self.reservations[room].pop(choice - 1)
+
                 
-                  
+                    # Update records to remove the checked-out guest
                     update_records = [record for record in records if not (
                         str(record["Room"]).strip() == room.strip() and 
                         str(record["Name"]).strip() == removed_guest["name"] and
@@ -163,7 +171,8 @@ class HotelManagement:
                         str(record["Check-out"]).strip() == removed_guest["check_out"]
                     )]
 
-                   
+
+                    # Clear and update Google Sheets
                     worksheet.clear()
                     worksheet.append_row(["Room", "Name", "Check-in", "Check-out"])
                     for record in update_records:
@@ -172,6 +181,7 @@ class HotelManagement:
                     print(f"✅ Guest {removed_guest['name']} checked out from Room {room}.")
 
                   
+                    # If no more reservations remain, add room to checked-out list
                     if not self.reservations[room]:  
                         del self.reservations[room]
                         self.checked_out_rooms.append(room) 
