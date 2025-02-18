@@ -45,16 +45,16 @@ class HotelManagement:
         self.reservations = {}
 
         for record in records:
-            # 🔹 جلوگیری از خطای عددی در Google Sheet
+            
             room = str(record["Room"]).strip()  
             name = str(record["Name"]).strip()
             check_in = str(record["Check-in"]).strip()
             check_out = str(record["Check-out"]).strip()
 
-            # 🔹 بررسی صحت داده‌ها و اضافه کردن به دیکشنری
+          
             if room and name and check_in and check_out:
                 if room not in self.reservations:
-                    self.reservations[room] = []  # ایجاد لیست برای هر اتاق
+                    self.reservations[room] = [] 
                 self.reservations[room].append({
                     "name": name,
                     "check_in": check_in,
@@ -101,50 +101,37 @@ class HotelManagement:
         else:
             print("No rooms have been checked out.")
 
-    def make_reservation(self, name):
-    """
-    Make a reservation for a guest
-    """
 
-    # درخواست شماره اتاق و بررسی معتبر بودن آن
-    while True:
-        room = input("Enter room number (e.g., Room3): ").strip()
-        if room not in self.rooms:
-            print("❌ Invalid room number. Please enter a valid room (Room1 to Room5).")
-        else:
-            break  # اگر شماره اتاق معتبر بود، از حلقه خارج شود
+    def make_reservation(self, name, room, check_in, check_out):
+        """
+        Make a reservation for a guest
+        """
+    
+        if room in self.reservations:
+            for res in self.reservations[room]:
+                if check_in <= res["check_out"] and check_out >= res["check_in"]:
+                    print(f"❌ Room {room} is already reserved from {res['check_in']} to {res['check_out']}.")
+                    return
 
-    # دریافت تاریخ‌ها
-    check_in = input("Enter check-in date (YYYY-MM-DD): ").strip()
-    check_out = input("Enter check-out date (YYYY-MM-DD): ").strip()
+        # add new reservation
+        if room not in self.reservations:
+            self.reservations[room] = []
 
-    # بررسی در دسترس بودن اتاق در تاریخ‌های انتخابی
-    if room in self.reservations:
-        for res in self.reservations[room]:
-            if check_in <= res["check_out"] and check_out >= res["check_in"]:
-                print(f"❌ Room {room} is already reserved from {res['check_in']} to {res['check_out']}.")
-                return
+        self.reservations[room].append({
+            "name": name,
+            "check_in": check_in,
+            "check_out": check_out
+        })
 
-    # اضافه کردن رزرو جدید
-    if room not in self.reservations:
-        self.reservations[room] = []
+        print(f"✅ Room {room} is now reserved for {name} from {check_in} to {check_out}.")
 
-    self.reservations[room].append({
-        "name": name,
-        "check_in": check_in,
-        "check_out": check_out
-    })
-
-    print(f"✅ Room {room} is now reserved for {name} from {check_in} to {check_out}.")
-
-    # به‌روزرسانی در Google Sheet
-    try:
-        worksheet = SHEET.worksheet("rooms")
-        worksheet.append_row([room, name, check_in, check_out])
-        self.get_reservations_from_sheet()
-    except Exception as e:
-        print(f"❌ Error updating Google Sheet: {e}")
-
+   
+        try:
+            worksheet = SHEET.worksheet("rooms")
+            worksheet.append_row([room, name, check_in, check_out])
+            self.get_reservations_from_sheet()
+        except Exception as e:
+            print(f"❌ Error updating Google Sheet: {e}")
 
 
     def check_out_guest(self, room):
@@ -153,22 +140,22 @@ class HotelManagement:
         """
         room = room.strip()
 
-        # بررسی آیا اتاق رزروی دارد یا نه
+     
         if room in self.reservations:
             try:
                 worksheet = SHEET.worksheet("rooms")
                 records = worksheet.get_all_records()
 
-                # نمایش لیست مهمانان این اتاق برای انتخاب
+               
                 print(f"\n📌 Room {room} has the following reservations:")
                 for i, res in enumerate(self.reservations[room], start=1):
                     print(f"{i}. Guest {res['name']} from {res['check_in']} to {res['check_out']}")
 
                 choice = int(input("\nEnter the number of the guest to check out: "))
                 if 1 <= choice <= len(self.reservations[room]):
-                    removed_guest = self.reservations[room].pop(choice - 1)  # حذف فقط مهمان انتخاب‌شده
+                    removed_guest = self.reservations[room].pop(choice - 1)  
                 
-                    # حذف این رزرو از Google Sheet
+                  
                     update_records = [record for record in records if not (
                         str(record["Room"]).strip() == room.strip() and 
                         str(record["Name"]).strip() == removed_guest["name"] and
@@ -176,7 +163,7 @@ class HotelManagement:
                         str(record["Check-out"]).strip() == removed_guest["check_out"]
                     )]
 
-                    # پاک‌کردن اطلاعات در Google Sheet و ذخیره مجدد لیست
+                   
                     worksheet.clear()
                     worksheet.append_row(["Room", "Name", "Check-in", "Check-out"])
                     for record in update_records:
@@ -184,10 +171,10 @@ class HotelManagement:
 
                     print(f"✅ Guest {removed_guest['name']} checked out from Room {room}.")
 
-                    # اگر هیچ رزرو دیگری برای این اتاق باقی نماند، اتاق را به لیست checked_out_rooms اضافه کن
+                  
                     if not self.reservations[room]:  
                         del self.reservations[room]
-                        self.checked_out_rooms.append(room)  # اضافه به لیست چک‌اوت‌ها
+                        self.checked_out_rooms.append(room) 
                 
                     self.get_reservations_from_sheet()
 
@@ -227,9 +214,15 @@ if __name__ == "__main__":
         elif choice == "4":
             # Collect reservation details from user
             name = input("Enter guest's name: ")
-            room = input("Enter room number (e.g., Room3): ")
-            check_in = input("Enter check-in date (YYYY-MM-DD): ")
-            check_out = input("Enter check-out date (YYYY-MM-DD): ")
+            valid_rooms = [f"Room{i}" for i in range(1, 6)]
+            room = input("Enter room number (e.g., Room3): ").strip()
+
+            while room not in valid_rooms:
+                print("❌ Invalid room number. Please enter a valid room (Room1 - Room5).")
+                room = input("Enter room number (e.g., Room3): ").strip()
+
+            check_in = input("Enter check-in date (YYYY-MM-DD): ").strip()
+            check_out = input("Enter check-out date (YYYY-MM-DD): ").strip()
 
             hotel.make_reservation(name, room, check_in, check_out)
 
