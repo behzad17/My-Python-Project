@@ -168,7 +168,7 @@ class HotelManagement:
 
                 # Ask user which reservation to remove
                 choice = int(
-                    input("\nEnter the number of the guest to check out: "))
+                    input("\nEnter the number of the guest to check out: ").strip())
                 if 1 <= choice <= len(self.reservations[room]):
                     removed_guest = self.reservations[room].pop(choice - 1)
 
@@ -234,7 +234,7 @@ if __name__ == "__main__":
         print("  6. Exit")
 
         # get the user`s choice
-        choice = input("Enter your choice: ")
+        choice = input("Enter your choice: ").strip()
 
         if choice == "1":
             hotel.display_reserved_rooms()
@@ -244,7 +244,7 @@ if __name__ == "__main__":
             hotel.display_checked_out_rooms()
         elif choice == "4":
             # Collect reservation details from user
-            name = input("Enter guest's name: ")
+            name = input("Enter guest's name: ").strip()
             valid_rooms = [f"Room{i}" for i in range(1, 6)]
             room = input("Enter room number (e.g., Room3): ").strip()
 
@@ -259,7 +259,7 @@ if __name__ == "__main__":
             hotel.make_reservation(name, room, check_in, check_out)
 
         elif choice == "5":
-            room = input("Enter room number to check out (e.g., Room3): ")
+            room = input("Enter room number to check out (e.g., Room3): ").strip()
             hotel.check_out_guest(room)
         elif choice == "6":
             print(" Exit")
