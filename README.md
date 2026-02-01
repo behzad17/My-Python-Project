@@ -104,7 +104,7 @@ I use a google sheet named hotel-management and worksheet named "rooms".
 
 
 ## link to deploy
-You can find the deployed link of program on **Heroku** here: [Heroku](https://my-python-project-33005f6b5ac8.herokuapp.com/)
+You can find the deployed link of program on **Heroku** here: [Heroku](https://my-python-project-33005f6b5ac8-31b9b8f21417.herokuapp.com/)
 
 ## link to GitHub repository
 You can find the depository link on **GitHub** here: [GitHub](https://github.com/behzad17/My-Python-Project)
@@ -160,3 +160,5 @@ _ Ensured that only the correct reservation is removed instead of clearing all r
 **Solution**:
 - Added clear error messages for invalid inputs.
 - Improved success messages after reservations and check-outs.
+
+> Note: The browser-based terminal has been tested and works best in desktop browsers such as Google Chrome and Firefox.  
